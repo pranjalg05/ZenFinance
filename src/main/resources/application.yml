@@ -1,3 +1,10 @@
 spring:
   application:
     name: ZenFinance
+  data:
+    mongodb:
+      port: 27017
+      host: localhost
+      database: zenDB
+      auto-index-creation: true
+jwt.secret.key: ${SECRET_KEY}

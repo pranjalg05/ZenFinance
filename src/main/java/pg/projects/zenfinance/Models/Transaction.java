@@ -1,25 +1,24 @@
 package pg.projects.zenfinance.Models;
 
-import lombok.AllArgsConstructor;
-import lombok.Data;
 import org.springframework.data.annotation.CreatedDate;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 
 import java.time.LocalDate;
 
-@AllArgsConstructor
-@Data
-@Document(collection = "accounts")
-public class Account {
+@Document(collection = "transactions")
+public class Transaction {
 
     @Id
+    private String transactionId;
+
     private String accountId;
     private String userId;
-    private double balance;
-    private String currency = "INR";
+    private double amount;
+    private TransactionMode type;
+    private String category;
 
     @CreatedDate
-    private LocalDate createdAt;
+    private LocalDate localDate;
 
 }
