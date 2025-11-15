@@ -24,13 +24,11 @@ public class SecurityConfig {
     @Bean
     public SecurityFilterChain apiAuth(HttpSecurity http) throws Exception {
         http
-                .securityMatcher("/api/**")
                 .authorizeHttpRequests(request -> request
-                        .requestMatchers("/api/public/**").permitAll()
-                        .requestMatchers("/api/user/**").authenticated()
-                        .requestMatchers("/api/admin/**").hasRole("ADMIN")
+                        .requestMatchers("/public/**").permitAll()
+                        .requestMatchers("/user/**").permitAll()
                         .anyRequest().authenticated())
-                .csrf(AbstractHttpConfigurer::disable) // No CSRF for APIs (JWT)
+                .csrf(AbstractHttpConfigurer::disable)
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class);
 
         return http.build();
