@@ -2,10 +2,10 @@ package pg.projects.zenfinance.DTOs;
 
 import jakarta.validation.constraints.Min;
 import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
 
 public record AccountCreationRequest(
-        @NotBlank String userId,
         @NotBlank String accountName,
-        @NotBlank @Min(0) double balance
+        @NotNull @Min(0)  double balance
 ) {
 }
