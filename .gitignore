@@ -32,6 +32,13 @@ build/
 !**/src/main/**/build/
 !**/src/test/**/build/
 
+### REACT FRONTEND ###
+frontend/node_modules/
+frontend/dist/
+frontend/.vite/
+frontend/build/
+
+
 ### VS Code ###
 .vscode/
 .env
