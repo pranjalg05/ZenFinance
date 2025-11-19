@@ -1,12 +1,12 @@
+
+### BACKEND JAVA ###
 backend/HELP.md
 target/
 backend/.mvn/wrapper/maven-wrapper.jar
-backend/.mvn/
-backend/mvnw
-backend/mvnw.cmd
 backend/src/main/**/target/
 backend/src/test/**/target/
 backend/config.env
+
 ### STS ###
 .apt_generated
 .classpath
