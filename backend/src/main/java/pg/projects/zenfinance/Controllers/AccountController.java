@@ -1,6 +1,7 @@
 package pg.projects.zenfinance.Controllers;
 
 import jakarta.validation.Valid;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -18,6 +19,7 @@ import java.util.List;
 
 @RestController
 @RequestMapping("/accounts")
+@Slf4j
 public class AccountController {
 
     @Autowired
@@ -40,6 +42,7 @@ public class AccountController {
 
     @GetMapping("/all")
     public ResponseEntity<List<AccountResponse>> getAllAccounts(){
+        log.info("Getting all accounts");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         User user = userService.findUserByUsername(username);
