@@ -3,9 +3,8 @@ spring:
     name: ZenFinance
   data:
     mongodb:
-#      port: 27017
-#      host: localhost
-#      database: zenDB
       uri: ${MONGO_URI}
       auto-index-creation: true
 jwt.secret.key: ${SECRET_KEY}
+server:
+  port: ${PORT:8080}
