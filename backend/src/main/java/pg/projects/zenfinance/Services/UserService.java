@@ -73,7 +73,6 @@ public class UserService {
 
         for(Account a : accounts){
             List<Transaction> transactions = transactionTemplateRepository.getTransactionOfCurrentMonth(a.getAccountId());
-            System.out.println(transactions.toString());
             income += transactions.stream().filter(t -> t.getType() == TransactionMode.INCOME).mapToDouble(Transaction::getAmount).sum();
             expense += transactions.stream().filter(t -> t.getType() == TransactionMode.EXPENSE).mapToDouble(Transaction::getAmount).sum();
         }

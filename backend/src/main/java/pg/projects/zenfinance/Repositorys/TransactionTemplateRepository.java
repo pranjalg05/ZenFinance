@@ -10,6 +10,7 @@ import pg.projects.zenfinance.Models.Transaction;
 import pg.projects.zenfinance.Models.TransactionMode;
 
 import java.time.LocalDate;
+import java.time.LocalDateTime;
 import java.util.List;
 
 @Repository
@@ -37,8 +38,8 @@ public class TransactionTemplateRepository {
     public List<Transaction> getTransactionOfCurrentMonth(String accountId){
         Query query = new Query();
         query.addCriteria(Criteria.where("accountId").is(accountId));
-        LocalDate start = LocalDate.now().withDayOfMonth(1);
-        LocalDate end = start.plusMonths(1);
+        LocalDateTime start = LocalDate.now().withDayOfMonth(1).atStartOfDay();
+        LocalDateTime end = start.plusMonths(1);
         query.addCriteria(Criteria.where("createdAt").gte(start).lt(end));
         return mongotemplate.find(query, Transaction.class);
     }
