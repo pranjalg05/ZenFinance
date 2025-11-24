@@ -58,30 +58,35 @@ function Dashboard() {
                 </button>
             </div>
 
+            {userSumary.numberOfAccounts > 0 ?
+                (<div className="grid grid-cols-1 md:grid-cols-3 gap-6">
 
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-
-                <div className="bg-blue-600 text-white p-6 rounded-xl shadow">
-                    <p className="text-sm opacity-80">Total Balance</p>
-                    <h2 className="text-3xl font-bold mt-2">₹{userSumary.totalBalance}</h2>
-                    <div className="mt-4 h-16 bg-white/20 rounded-lg"></div>
-                </div>
-
-                <div className="bg-white p-6 rounded-xl shadow">
-                    <p className="text-gray-600 text-sm">Income this Month</p>
-                    <h2 className="text-3xl font-bold mt-2">₹{userSumary.incomeThisMonth}</h2>
-                    <div className="mt-4 h-16 bg-red-100 rounded-lg">
+                    <div className="bg-blue-600 text-white p-6 rounded-xl shadow">
+                        <p className="text-sm opacity-80">Total Balance</p>
+                        <h2 className="text-3xl font-bold mt-2">₹{userSumary.totalBalance}</h2>
+                        <div className="mt-4 h-16 bg-white/20 rounded-lg"></div>
                     </div>
-                </div>
 
-                <div className="bg-white p-6 rounded-xl shadow">
-                    <p className="text-gray-600 text-sm">Expense this Month</p>
-                    <h2 className="text-3xl font-bold mt-2">₹{userSumary.expenseThisMonth}</h2>
-                    <div className="mt-4 h-16 bg-yellow-100 rounded-lg">
+                    <div className="bg-white p-6 rounded-xl shadow">
+                        <p className="text-gray-600 text-sm">Income this Month</p>
+                        <h2 className="text-3xl font-bold mt-2">₹{userSumary.incomeThisMonth}</h2>
+                        <div className="mt-4 h-16 bg-red-100 rounded-lg">
+                        </div>
                     </div>
-                </div>
 
-            </div>
+                    <div className="bg-white p-6 rounded-xl shadow">
+                        <p className="text-gray-600 text-sm">Expense this Month</p>
+                        <h2 className="text-3xl font-bold mt-2">₹{userSumary.expenseThisMonth}</h2>
+                        <div className="mt-4 h-16 bg-yellow-100 rounded-lg">
+                        </div>
+                    </div>
+
+                </div>) : (
+                    <div className="text-center text-gray-600">No accounts found! Create one now</div>
+
+                )
+            }
+
             {showAddAccount && (
                 <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50">
                     <div className="bg-white p-6 rounded-xl shadow-lg w-full max-w-md">

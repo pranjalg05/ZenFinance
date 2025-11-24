@@ -34,12 +34,7 @@ function DashboardLayout({children}) {
 
             <div className="flex-1">
                 <header className="flex justify-end items-center bg-white shadow-sm px-6 py-4">
-                    <div className="flex items-center gap-4">
-                        <button className="text-gray-600 hover:text-gray-800">
-                            🔔
-                        </button>
-                        <div className="w-10 h-10 rounded-full bg-gray-300"></div>
-                    </div>
+                    <div className="w-10 h-10 rounded-full bg-gray-300"></div>
                 </header>
 
                 <main className="p-6">{children}</main>

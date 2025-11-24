@@ -10,20 +10,24 @@ function Login() {
     const [username, setUsername] = useState("");
     const [password, setPassword] = useState("");
     const [error, setError] = useState("");
+    const [issubmitting, setIsSubmitting] = useState(false);
 
     const handleLogin = async (e) => {
         e.preventDefault();
+        if(issubmitting) return;
         setError("");
+        setIsSubmitting(true);
+        console.log("submitting");
         try {
             const res = await api.post("/user/login",
                 {username: username, password: password}
             )
-
             localStorage.setItem("token", res.data.token);
-
             navigate("/");
         } catch (err) {
             setError("Invalid username or password");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 

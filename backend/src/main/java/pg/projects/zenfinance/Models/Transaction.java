@@ -25,6 +25,6 @@ public class Transaction {
     private String category;
 
     @CreatedDate
-    private LocalDate localDate;
+    private LocalDate createdAt;
 
 }
