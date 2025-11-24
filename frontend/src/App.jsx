@@ -4,7 +4,8 @@ import Dashboard from './pages/Dashboard.jsx';
 import Login from './pages/Login.jsx';
 import Register from './pages/Register.jsx';
 import ProtectedRoute from "./utils/ProtectedRout.jsx";
-
+import Accounts from "./pages/Accounts.jsx";
+import AccountDetails from "./pages/AccountDetails.jsx";
 
 function App() {
     return (
@@ -13,6 +14,16 @@ function App() {
                 <Route path="/" element={
                     <ProtectedRoute>
                         <Dashboard/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/accounts" element={
+                    <ProtectedRoute>
+                        <Accounts/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/accounts/:id" element={
+                    <ProtectedRoute>
+                        <AccountDetails/>
                     </ProtectedRoute>
                 }/>
                 <Route path="/login" element={<Login/>}/>

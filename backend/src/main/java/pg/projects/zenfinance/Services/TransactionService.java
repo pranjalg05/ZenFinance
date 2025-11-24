@@ -63,7 +63,8 @@ public class TransactionService {
                 t.getAccountId(),
                 t.getAmount(),
                 t.getType(),
-                t.getCategory()
+                t.getCategory(),
+                t.getCreatedAt()
         );
     }
 

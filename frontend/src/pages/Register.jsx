@@ -11,11 +11,14 @@ function Register() {
     const [password, setPassword] = useState("");
     const [email, setEmail] = useState("");
     const [error, setError] = useState("");
+    const [issubmitting, setIsSubmitting] = useState(false);
 
 
     const handleRegister = async (e) => {
         e.preventDefault();
+        if(issubmitting) return;
         setError("");
+        setIsSubmitting(true);
         try {
             await api.post("/user/signup", {username: username, password: password, email: email});
             const res = await api.post("/user/login", {username: username, password: password});
@@ -23,6 +26,8 @@ function Register() {
             navigate("/");
         } catch (e) {
             setError("Username already exists");
+        } finally {
+            setIsSubmitting(false);
         }
     };
 

@@ -17,7 +17,6 @@ function Login() {
         if(issubmitting) return;
         setError("");
         setIsSubmitting(true);
-        console.log("submitting");
         try {
             const res = await api.post("/user/login",
                 {username: username, password: password}

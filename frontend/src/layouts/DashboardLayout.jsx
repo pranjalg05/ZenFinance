@@ -1,5 +1,5 @@
 import {useNavigate} from "react-router-dom";
-import {Home, CreditCard, BarChart3, Settings} from 'lucide-react'
+import {Home, CreditCard, BarChart3, Settings, User} from 'lucide-react'
 
 function DashboardLayout({children}) {
 
@@ -34,7 +34,11 @@ function DashboardLayout({children}) {
 
             <div className="flex-1">
                 <header className="flex justify-end items-center bg-white shadow-sm px-6 py-4">
-                    <div className="w-10 h-10 rounded-full bg-gray-300"></div>
+
+                    <button className={"w-10 h-10 rounded-full bg-blue-600 justify-center items-center flex"}>
+                        <User size={24} color={"white"} className={"text-white"}/>
+                    </button>
+
                 </header>
 
                 <main className="p-6">{children}</main>
@@ -42,7 +46,6 @@ function DashboardLayout({children}) {
             </div>
         </div>
     )
-
 }
 
 export default DashboardLayout;
