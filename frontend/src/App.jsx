@@ -6,6 +6,7 @@ import Register from './pages/Register.jsx';
 import ProtectedRoute from "./utils/ProtectedRout.jsx";
 import Accounts from "./pages/Accounts.jsx";
 import AccountDetails from "./pages/AccountDetails.jsx";
+import Stats from "./pages/Stats.jsx";
 
 function App() {
     return (
@@ -24,6 +25,11 @@ function App() {
                 <Route path="/accounts/:id" element={
                     <ProtectedRoute>
                         <AccountDetails/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/stats" element={
+                    <ProtectedRoute>
+                        <Stats/>
                     </ProtectedRoute>
                 }/>
                 <Route path="/login" element={<Login/>}/>
