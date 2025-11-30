@@ -2,9 +2,13 @@ import {useState, useEffect} from "react";
 import api from "../api/axios";
 import {useParams} from "react-router-dom";
 import DashboardLayout from "../layouts/DashboardLayout.jsx";
+import {Chart as ChartJS, ArcElement, Tooltip, Legend} from 'chart.js';
+import {Pie} from 'react-chartjs-2';
 
 
 function AccountDetails() {
+
+    ChartJS.register(ArcElement, Tooltip, Legend);
 
     const {id} = useParams();
 
@@ -19,9 +23,20 @@ function AccountDetails() {
     const [transactionError, setTransactionError] = useState("");
     const [transactionType, setTransactionType] = useState("INCOME");
 
+    const income = transactions.filter(
+        trans => trans.type === "INCOME"
+    ).reduce((acc, trans) => acc + trans.amount, 0);
+
+    const expense = transactions.filter(
+        trans => trans.type === "EXPENSE"
+    ).reduce((acc, trans) => acc + trans.amount, 0);
+
+    if(showAddTransaction) document.body.style.overflow = "hidden";
+    else document.body.style.overflow = "auto";
+
     const handleTransactionCreation = async (e) => {
         e.preventDefault();
-        if(isSubmitting) return;
+        if (isSubmitting) return;
         setTransactionError("");
         setIsSubmitting(true);
 
@@ -91,8 +106,23 @@ function AccountDetails() {
             </p>
 
             <div className="grid grid-cols-1 md:grid-cols-2 gap-6 mb-6">
-                <div className="bg-white p-6 rounded-xl shadow">Income vs Expense Chart Here</div>
-                <div className="bg-white p-6 rounded-xl shadow">Monthly Trend Chart Here</div>
+                <div className="bg-white p-6 rounded-xl shadow">Income vs Expense Chart Here
+                    <Pie data={{
+                        labels: ['Income', 'Expense'],
+                        datasets: [{
+                            data: [income, expense],
+                            backgroundColor: ['#00C49F', '#FF5733'],
+                            hoverOffset: 4,
+                            borderWidth: 2,
+                            borderColor: 'white'
+                        }]
+                    }}
+
+                    />
+                </div>
+                <div className="bg-white p-6 rounded-xl shadow">Monthly Trend Chart Here
+
+                </div>
             </div>
 
             <div className={"flex justify-between items-center mb-6"}>
@@ -131,7 +161,8 @@ function AccountDetails() {
                                 <label className="block text-sm font-medium mb-1">
                                     Transaction Type
                                 </label>
-                                <select className="w-full p-2 border rounded-lg" onChange={(e) => setTransactionType(e.target.value)}>
+                                <select className="w-full p-2 border rounded-lg"
+                                        onChange={(e) => setTransactionType(e.target.value)}>
                                     <option value="INCOME">Income</option>
                                     <option value="EXPENSE">Expense</option>
                                 </select>
@@ -148,7 +179,6 @@ function AccountDetails() {
                                     onChange={(e) => setTransactionCategory(e.target.value)}
                                 />
                             </div>
-
 
 
                             {transactionError && (
