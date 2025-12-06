@@ -47,10 +47,10 @@ public class TransactionController {
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();
         List<TransactionResponse> transactions = transactionService.getAllTransactionsOfUser(username);
-        Object transactions = null;
         if(transactions == null){
             return ResponseEntity.badRequest().build();
         }
+        return ResponseEntity.ok(transactions);
     }
 
     @GetMapping("/filter")
