@@ -42,6 +42,17 @@ public class TransactionController {
         return ResponseEntity.ok(transactions);
     }
 
+    @GetMapping
+    public ResponseEntity<List<TransactionResponse>> getAllTransactionsOfUser(){
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        String username = authentication.getName();
+        List<TransactionResponse> transactions = transactionService.getAllTransactionsOfUser(username);
+        Object transactions = null;
+        if(transactions == null){
+            return ResponseEntity.badRequest().build();
+        }
+    }
+
     @GetMapping("/filter")
     public ResponseEntity<List<TransactionResponse>> getAllTransactionsOfDate(
             @Valid @RequestBody TransactionFilterRequest request

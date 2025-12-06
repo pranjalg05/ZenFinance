@@ -11,6 +11,7 @@ import pg.projects.zenfinance.Models.TransactionMode;
 import pg.projects.zenfinance.Repositorys.AccountRepository;
 import pg.projects.zenfinance.Repositorys.TransactionRepository;
 import pg.projects.zenfinance.Repositorys.TransactionTemplateRepository;
+import pg.projects.zenfinance.Repositorys.UserRepository;
 
 import java.util.List;
 
@@ -22,6 +23,9 @@ public class TransactionService {
 
     @Autowired
     TransactionTemplateRepository transactionTemplateRepository;
+
+    @Autowired
+    UserRepository userRepository;
 
     @Autowired
     AccountRepository accountRepository;
@@ -55,6 +59,12 @@ public class TransactionService {
         List<Transaction> transactionRecords = transactionRepository.getTransactionsByAccountId(accountId);
         if(transactionRecords == null){ return null; }
         return transactionRecords.stream().map(this::toResponse).toList();
+    }
+
+    public List<TransactionResponse> getAllTransactionsOfUser(String username){
+        String userId = userRepository.findUserByUsername(username).getUserId();
+        List<Transaction> transactionsByUserId = transactionRepository.getTransactionsByUserId(userId);
+        return transactionsByUserId.stream().map(this::toResponse).toList();
     }
 
     private TransactionResponse toResponse(Transaction t){

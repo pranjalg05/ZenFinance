@@ -127,7 +127,6 @@ function AccountDetails() {
             }
         });
 
-        // Only include months that have transactions
         const months = Object.keys(monthlyData);
         const incomeData = months.map(month => monthlyData[month].income);
         const expenseData = months.map(month => monthlyData[month].expense);
