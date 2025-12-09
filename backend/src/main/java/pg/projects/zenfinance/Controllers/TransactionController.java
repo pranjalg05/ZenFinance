@@ -42,7 +42,7 @@ public class TransactionController {
         return ResponseEntity.ok(transactions);
     }
 
-    @GetMapping
+    @GetMapping("/all")
     public ResponseEntity<List<TransactionResponse>> getAllTransactionsOfUser(){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
         String username = authentication.getName();

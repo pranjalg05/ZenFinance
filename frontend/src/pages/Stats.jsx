@@ -1,7 +1,6 @@
 import DashBoardLayout from "../layouts/DashboardLayout";
 import {useEffect, useState} from "react";
 import api from "../api/axios.js";
-import {Pie} from 'react-chartjs-2';
 import {
     Chart as ChartJS,
     ArcElement,
@@ -9,11 +8,10 @@ import {
     Legend,
     CategoryScale
 } from 'chart.js';
-
+import {Pie} from 'react-chartjs-2';
 function Stats() {
 
     ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale);
-    ChartJS.register(Pie);
 
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
