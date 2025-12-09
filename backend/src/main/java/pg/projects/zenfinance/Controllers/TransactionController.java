@@ -27,8 +27,8 @@ public class TransactionController {
     @PostMapping("/create")
     public ResponseEntity createTransaction(@Valid @RequestBody TransactionRequest request){
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        String username = authentication.getName();
-        if(transactionService.addTransaction(request, username))
+        String userId = userService.findUserByUsername(authentication.getName()).getUserId();
+        if(transactionService.addTransaction(request, userId))
             return ResponseEntity.ok().build();
         return ResponseEntity.badRequest().build();
     }
