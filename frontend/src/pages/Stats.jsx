@@ -33,7 +33,7 @@ function Stats() {
     const loadTransactions = async () => {
         setLoading(true);
         try {
-            const res = await api.get("/transactions");
+            const res = await api.get("/transactions/all");
             setTransactions(res.data);
         } catch (err) {
             console.error("Failed to load transactions", err);
