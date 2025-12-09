@@ -52,10 +52,10 @@ function Stats() {
     return (
         <DashBoardLayout>
             <h2 className="text-2xl font-bold mb-4">Stats</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-4 mb-6">
+            <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-2 gap-4 mb-6">
                 <div className="bg-white p-4 rounded-xl shadow">
                     <h3 className="text-sm font-semibold mb-2">Total Income</h3>
-                    <div className="flex items-center justify-center">
+                    <div className="flex items-center justify-center h-[300px]">
                         <Pie data={{
                             labels: ['Income', 'Expense'],
                             datasets: [{
