@@ -11,7 +11,8 @@ function Dashboard() {
     useEffect(() => {
         setLoading(true);
         api.get("/dashboard/summary")
-            .then(res => {
+            .then(
+                res => {
                 setUserSumary(res.data);
                 setLoading(false);
             })

@@ -6,12 +6,15 @@ import {
     ArcElement,
     Tooltip,
     Legend,
-    CategoryScale
+    CategoryScale,
+    LinearScale,
+    BarElement
 } from 'chart.js';
-import {Pie} from 'react-chartjs-2';
+import {Bar, Pie} from 'react-chartjs-2';
+
 function Stats() {
 
-    ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale);
+    ChartJS.register(ArcElement, Tooltip, Legend, CategoryScale, LinearScale, BarElement);
 
     const [transactions, setTransactions] = useState([]);
     const [loading, setLoading] = useState(true);
@@ -41,6 +44,52 @@ function Stats() {
             setLoading(false);
         }
     }
+
+    const processMonthlyData = () => {
+        const currentYear = new Date().getFullYear();
+        const monthlyData = {};
+
+        transactions.forEach(trans => {
+            const date = new Date(trans.createdAt);
+            if (date.getFullYear() === currentYear) {
+                const month = date.toLocaleString('default', {month: 'short'});
+                if (!monthlyData[month]) {
+                    monthlyData[month] = {income: 0, expense: 0};
+                }
+                if (trans.type === 'INCOME') {
+                    monthlyData[month].income += trans.amount;
+                } else {
+                    monthlyData[month].expense += trans.amount;
+                }
+            }
+        });
+
+        const months = Object.keys(monthlyData);
+        const incomeData = months.map(month => monthlyData[month].income);
+        const expenseData = months.map(month => monthlyData[month].expense);
+
+        return {
+            labels: months,
+            datasets: [
+                {
+                    label: 'Income',
+                    data: incomeData,
+                    stack: 'Stack 0',
+                    backgroundColor: '#4c9f09',
+                    borderColor: 'white',
+                    borderWidth: 1
+                },
+                {
+                    label: 'Expense',
+                    data: expenseData,
+                    stack: 'Stack 1',
+                    backgroundColor: '#d20000',
+                    borderColor: 'white',
+                    borderWidth: 1
+                }
+            ]
+        };
+    };
 
 
     if (loading) return (
@@ -81,6 +130,48 @@ function Stats() {
                                      }
                                  }
                              }}
+                        />
+                    </div>
+                </div>
+                <div className="bg-white p-4 rounded-xl shadow h-[400px] flex flex-col">
+                    <h3 className="text-sm font-semibold mb-2">Monthly Trend</h3>
+                    <div className="flex-1 flex items-center justify-center ">
+                        <Bar
+                            data={processMonthlyData()}
+                            options={{
+                                responsive: true,
+                                maintainAspectRatio: false,
+                                scales: {
+                                    x: {
+                                        stacked: true,
+                                        ticks: {
+                                            font: {
+                                                size: 10
+                                            }
+                                        }
+                                    },
+                                    y: {
+                                        stacked: true,
+                                        beginAtZero: true,
+                                        ticks: {
+                                            font: {
+                                                size: 10
+                                            }
+                                        }
+                                    }
+                                },
+                                plugins: {
+                                    legend: {
+                                        position: 'bottom',
+                                        labels: {
+                                            boxWidth: 10,
+                                            font: {
+                                                size: 11
+                                            }
+                                        }
+                                    }
+                                }
+                            }}
                         />
                     </div>
                 </div>
