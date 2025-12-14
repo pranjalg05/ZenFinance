@@ -30,6 +30,9 @@ public class DashBoardController {
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         UserLoginResponse response = userService.updateUser(editRequest, username);
+        if(response == null){
+            return ResponseEntity.badRequest().build();
+        }
         return ResponseEntity.ok(response);
     }
 

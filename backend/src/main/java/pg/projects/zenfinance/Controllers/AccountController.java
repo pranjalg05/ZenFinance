@@ -42,7 +42,6 @@ public class AccountController {
 
     @GetMapping("/all")
     public ResponseEntity<List<AccountResponse>> getAllAccounts(){
-        log.info("Getting all accounts");
         Authentication auth = SecurityContextHolder.getContext().getAuthentication();
         String username = auth.getName();
         User user = userService.findUserByUsername(username);

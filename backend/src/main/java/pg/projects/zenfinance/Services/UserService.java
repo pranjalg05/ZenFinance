@@ -13,6 +13,7 @@ import pg.projects.zenfinance.Models.User;
 import pg.projects.zenfinance.Repositorys.AccountRepository;
 import pg.projects.zenfinance.Repositorys.TransactionTemplateRepository;
 import pg.projects.zenfinance.Repositorys.UserRepository;
+import pg.projects.zenfinance.Utils.JwtUtil;
 
 import java.util.List;
 
@@ -25,6 +26,9 @@ public class UserService {
 
     @Autowired
     AccountRepository accountRepository;
+
+    @Autowired
+    JwtUtil jwtUtil;
 
     private static final PasswordEncoder passwordEncoder = new BCryptPasswordEncoder();
 
@@ -70,7 +74,6 @@ public class UserService {
 
         for(Account a : accounts){
             List<Transaction> transactions = transactionTemplateRepository.getTransactionOfCurrentMonth(a.getAccountId());
-            System.out.println(transactions.toString());
             income += transactions.stream().filter(t -> t.getType() == TransactionMode.INCOME).mapToDouble(Transaction::getAmount).sum();
             expense += transactions.stream().filter(t -> t.getType() == TransactionMode.EXPENSE).mapToDouble(Transaction::getAmount).sum();
         }
@@ -88,14 +91,26 @@ public class UserService {
 
     public UserLoginResponse updateUser(UserEditRequest editRequest, String username) {
         User user = userRepository.findUserByUsername(username);
-        if(editRequest.username() != null){
-            user.setUsername(editRequest.username());
-        }
-        if(editRequest.password() != null){
-            if(editRequest.oldPassword() == null || !passwordEncoder.matches(editRequest.oldPassword(), user.getPassword())) return null;
+        
+        if(editRequest.password() != null) {
+            if(editRequest.oldPassword() == null || 
+               !passwordEncoder.matches(editRequest.oldPassword(), user.getPassword())) {
+                return null;
+            }
             user.setPassword(passwordEncoder.encode(editRequest.password()));
         }
+        
+        if(editRequest.username() != null && !editRequest.username().equals(username)) {
+            if(userRepository.existsUserByUsername(editRequest.username())) {
+                return null;
+            }
+            user.setUsername(editRequest.username());
+        }
+        
         userRepository.save(user);
-        return new UserLoginResponse(user.getUsername(), user.getEmail());
+        
+        String newToken = jwtUtil.generateToken(user.getUsername());
+        
+        return new UserLoginResponse(user.getUsername(), newToken);
     }
 }

@@ -13,6 +13,8 @@ function Settings() {
     const [usernameError, setUsernameError] = useState("");
     const [passwordError, setPasswordError] = useState("");
     const [isSubmitting, setIsSubmitting] = useState(false);
+    const [showPassword, setShowPassword] = useState(false);
+    const [success, setSuccess] = useState("");
 
     const navigate = useNavigate();
 
@@ -25,16 +27,19 @@ function Settings() {
 
     const handleUpdateUsername = async () => {
         setUsernameError("");
-        if(newUsername.length < 3 || newUsername.length > 15) {
+        if (newUsername.length < 3 || newUsername.length > 15) {
             setUsernameError("Username must be between 3 and 15 characters");
             return;
         }
-        if(isSubmitting) return;
+        if (isSubmitting) return;
         setIsSubmitting(true);
         try {
-            await api.post("/dashboard/update-user", {username: newUsername});
-            localStorage.setItem("username", newUsername);
+            const response = await api.post("/dashboard/update-user", {username: newUsername});
+            localStorage.setItem("username", response.data.username);
+            localStorage.setItem("token", response.data.token);
             setUsername(newUsername);
+
+            api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
         } catch (e) {
             setUsernameError("Username already exists");
         } finally {
@@ -44,19 +49,31 @@ function Settings() {
 
     const handleUpdatePassword = async () => {
         setPasswordError("");
-        if(password.length < 3) {
+        if (password.length < 3) {
+            setSuccess("")
             setPasswordError("Password must be at least 3 characters long");
             return;
         }
         if (!oldPassword) {
+            setSuccess("")
             setPasswordError("Current password is required");
             return;
         }
-        if(isSubmitting) return;
+        if (isSubmitting) return;
         setIsSubmitting(true);
         try {
-            await api.post("/dashboard/update-password", {oldPassword: oldPassword, newPassword: password});
+            const response = await api.post("/dashboard/update-user", {
+                password: password,
+                oldPassword: oldPassword
+            });
+
+            localStorage.setItem("token", response.data.token);
+            api.defaults.headers.common['Authorization'] = `Bearer ${response.data.token}`;
+            setPassword("");
+            setOldPassword("");
+            setSuccess("Password updated successfully");
         } catch (e) {
+            setSuccess("");
             setPasswordError("Incorrect password");
         } finally {
             setIsSubmitting(false);
@@ -93,10 +110,12 @@ function Settings() {
                     <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                             disabled={username === newUsername || isSubmitting}
                             onClick={handleUpdateUsername}
-                    >Save Changes</button>
+                    >Save Changes
+                    </button>
                     <button className="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-700"
                             onClick={handleReset}
-                    >Reset</button>
+                    >Reset
+                    </button>
                 </div>
             </div>
             <div className="bg-white p-6 rounded-xl drop-shadow mt-6">
@@ -106,24 +125,32 @@ function Settings() {
                 </p>
                 <div className="mb-4">
                     <label className="block mb-1 text-xl font-medium  text-gray-700">Current Password</label>
-                    <input type="password"
+                    <input type={showPassword? "text":"password"}
                            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none mt-1"
                            value={oldPassword} onChange={(e) => setOldPassword(e.target.value)}
                     />
                 </div>
                 <div className="mb-6">
                     <label className="block mb-1 text-xl font-medium  text-gray-700">New Password</label>
-                    <input type="password"
+                    <input type={showPassword ? "text" : "password"}
                            className="w-full p-2 border rounded-lg focus:ring-2 focus:ring-blue-500 outline-none mt-1"
                            value={password} onChange={(e) => setPassword(e.target.value)}
                     />
                 </div>
+                <div className="flex items-center justify-center mb-4">
+                    <input id={"showPassword"} type="checkbox" className={"mr-2 w-4 h-4" + (showPassword ? "checked" : "")}
+                           onClick={() => setShowPassword(!showPassword)}>
+                    </input>
+                    <label className="text-gray-700" for="showPassword">Show Password</label>
+                </div>
+                <p className="text-blue-400 text-sm text-center mb-2">{success}</p>
                 <p className="text-red-500 text-sm text-center mb-2">{passwordError}</p>
                 <div className="flex items-center justify-center gap-6">
                     <button className="bg-blue-600 text-white px-4 py-2 rounded-lg hover:bg-blue-700"
                             disabled={isSubmitting}
                             onClick={handleUpdatePassword}
-                    >Save Changes</button>
+                    >Save Changes
+                    </button>
                 </div>
             </div>
             <div className={"justify-end mt-2 "}>
@@ -132,7 +159,8 @@ function Settings() {
                             localStorage.clear()
                             navigate("/login")
                         }}
-                >Logout</button>
+                >Logout
+                </button>
             </div>
         </DashboardLayout>
     )
