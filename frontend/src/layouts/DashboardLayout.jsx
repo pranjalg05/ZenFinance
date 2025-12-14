@@ -35,7 +35,7 @@ function DashboardLayout({children}) {
             <div className="flex-1">
                 <header className="flex justify-end items-center bg-white shadow-sm px-6 py-4">
 
-                    <button className={"w-10 h-10 rounded-full bg-blue-600 justify-center items-center flex"}>
+                    <button className={"w-10 h-10 rounded-full bg-blue-600 justify-center items-center flex"} onClick={() => navigate("/settings")}>
                         <User size={24} color={"white"} className={"text-white"}/>
                     </button>
 

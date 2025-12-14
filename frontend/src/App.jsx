@@ -7,6 +7,7 @@ import ProtectedRoute from "./utils/ProtectedRout.jsx";
 import Accounts from "./pages/Accounts.jsx";
 import AccountDetails from "./pages/AccountDetails.jsx";
 import Stats from "./pages/Stats.jsx";
+import Settings from "./pages/Settings.jsx";
 
 function App() {
     return (
@@ -30,6 +31,11 @@ function App() {
                 <Route path="/stats" element={
                     <ProtectedRoute>
                         <Stats/>
+                    </ProtectedRoute>
+                }/>
+                <Route path="/settings" element={
+                    <ProtectedRoute>
+                        <Settings/>
                     </ProtectedRoute>
                 }/>
                 <Route path="/login" element={<Login/>}/>

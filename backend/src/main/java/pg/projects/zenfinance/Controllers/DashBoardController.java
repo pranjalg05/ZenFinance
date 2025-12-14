@@ -5,8 +5,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+import pg.projects.zenfinance.DTOs.UserEditRequest;
+import pg.projects.zenfinance.DTOs.UserLoginResponse;
 import pg.projects.zenfinance.DTOs.UserSummaryResponse;
 import pg.projects.zenfinance.Services.UserService;
 
@@ -24,5 +27,14 @@ public class DashBoardController {
         UserSummaryResponse userSummary = userService.getUserSummary(username);
         return ResponseEntity.ok(userSummary);
     }
+
+    @PostMapping("/update-user")
+    public ResponseEntity<UserLoginResponse> updateUser(UserEditRequest editRequest){
+        Authentication auth = SecurityContextHolder.getContext().getAuthentication();
+        String username = auth.getName();
+        UserLoginResponse response = userService.updateUser(editRequest, username);
+        return ResponseEntity.ok(response);
+    }
+
 
 }

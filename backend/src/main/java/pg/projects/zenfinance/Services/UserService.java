@@ -5,10 +5,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
-import pg.projects.zenfinance.DTOs.AccountResponse;
-import pg.projects.zenfinance.DTOs.UserRegisterRequest;
-import pg.projects.zenfinance.DTOs.UserRegisterResponse;
-import pg.projects.zenfinance.DTOs.UserSummaryResponse;
+import pg.projects.zenfinance.DTOs.*;
 import pg.projects.zenfinance.Models.Account;
 import pg.projects.zenfinance.Models.Transaction;
 import pg.projects.zenfinance.Models.TransactionMode;
@@ -81,6 +78,7 @@ public class UserService {
 
         return new UserSummaryResponse(
                 user.getUsername(),
+                user.getEmail(),
                 accounts == null ? 0 : accounts.size(),
                 accounts == null ? 0 : accounts.stream().mapToDouble(Account::getBalance).sum(),
                 income,
@@ -88,4 +86,16 @@ public class UserService {
                 );
     }
 
+    public UserLoginResponse updateUser(UserEditRequest editRequest, String username) {
+        User user = userRepository.findUserByUsername(username);
+        if(editRequest.username() != null || !editRequest.username().isEmpty()){
+            user.setUsername(editRequest.username());
+        }
+        if(editRequest.password() != null || !editRequest.password().isEmpty()){
+            if(editRequest.oldPassword() == null || !passwordEncoder.matches(editRequest.oldPassword(), user.getPassword())) return null;
+            user.setPassword(passwordEncoder.encode(editRequest.password()));
+        }
+        userRepository.save(user);
+        return new UserLoginResponse(user.getUsername(), user.getEmail());
+    }
 }

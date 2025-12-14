@@ -15,6 +15,8 @@ function Dashboard() {
                 res => {
                 setUserSumary(res.data);
                 setLoading(false);
+                localStorage.setItem("username", userSumary.username);
+                localStorage.setItem("email", userSumary.email);
             })
             .catch(err => {
                 console.error("Failed to load summary", err);
