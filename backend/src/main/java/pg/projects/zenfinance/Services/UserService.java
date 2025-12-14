@@ -88,10 +88,10 @@ public class UserService {
 
     public UserLoginResponse updateUser(UserEditRequest editRequest, String username) {
         User user = userRepository.findUserByUsername(username);
-        if(editRequest.username() != null || !editRequest.username().isEmpty()){
+        if(editRequest.username() != null){
             user.setUsername(editRequest.username());
         }
-        if(editRequest.password() != null || !editRequest.password().isEmpty()){
+        if(editRequest.password() != null){
             if(editRequest.oldPassword() == null || !passwordEncoder.matches(editRequest.oldPassword(), user.getPassword())) return null;
             user.setPassword(passwordEncoder.encode(editRequest.password()));
         }
