@@ -1,4 +1,6 @@
 import axios from 'axios';
+import {useNavigate} from "react-router-dom";
+
 
 const api = axios.create({
     baseURL: "https://zenfinance-pdqi.onrender.com"
@@ -11,5 +13,16 @@ api.interceptors.request.use(config => {
     },
     (error) => Promise.reject(error)
 );
+
+api.interceptors.response.use(
+    response => response,
+    error => {
+        if (error.response && error.response.status === 401) {
+            localStorage.clear();
+            window.location.href = '/login';
+        }
+        return Promise.reject(error);
+    }
+)
 
 export default api;

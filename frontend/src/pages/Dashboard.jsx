@@ -1,12 +1,14 @@
 import DashboardLayout from "../layouts/DashboardLayout";
 import {useEffect, useState} from "react";
 import api from "../api/axios";
+import {useNavigate} from "react-router-dom";
 
 function Dashboard() {
 
     const [userSumary, setUserSumary] = useState([])
     const [loading, setLoading] = useState(true)
 
+    const navigate = useNavigate();
 
     useEffect(() => {
         setLoading(true);
